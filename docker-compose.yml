@@ -7,7 +7,7 @@ services:
     applications:
         image: tianon/true
         volumes:
-            - ../:/var/www
+            - ../pulpo:/var/www
 #            - ../sample/:/var/www/sample
 
 ### Workspace Utilities Container ###########################
@@ -18,7 +18,7 @@ services:
             args:
                 - INSTALL_XDEBUG=false
                 - INSTALL_MONGO=false
-                - INSTALL_NODE=false
+                - INSTALL_NODE=true
                 - INSTALL_YARN=false
                 - INSTALL_DRUSH=false
                 - INSTALL_AEROSPIKE_EXTENSION=false
@@ -35,11 +35,14 @@ services:
                 - TZ=UTC
         volumes_from:
             - applications
+        links:
+            - redis
         extra_hosts:
             # IMPORTANT: Replace with your Docker Host IP (will be appended to /etc/hosts)
             - "dockerhost:10.0.75.1"
         ports:
            - "2222:22"
+           - "5000:5000"
         tty: true
 
 ### PHP-FPM Container #######################################
